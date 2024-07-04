@@ -5,7 +5,7 @@ import { client } from "./client";
 const ImageUrl = ({ image, className }: any) => {
   const imageProps = useNextSanityImage(client, image);
 
-  // Handle case where imageProps is null
+  // Handle case where imageProps is null or undefined
   if (!imageProps) {
     console.error("Image props are null for image:", image);
     return null; // Or return a placeholder image or an error message
@@ -16,7 +16,7 @@ const ImageUrl = ({ image, className }: any) => {
 
   return (
     <Image
-      {...imageProps}
+      {...(imageProps as any)} // Type assertion to any to suppress TypeScript error
       style={{ width: "100%", height: "auto" }}
       decoding="async"
       loading="lazy"
