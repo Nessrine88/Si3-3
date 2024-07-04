@@ -1,6 +1,6 @@
 import React from 'react';
 import { getCards } from '../lib/cards';
-export const revalidate = 10;
+export const revalidate = 3;
 
 // import {Pagination, PaginationItem, PaginationCursor} from "@nextui-org/pagination";
 
