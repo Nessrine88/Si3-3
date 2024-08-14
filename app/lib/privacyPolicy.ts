@@ -3,7 +3,7 @@ import { PrivacyPolicy } from "./types/interfaces";
 import groq from "groq";
 export async function getprivacyPolicy(){
     const query=groq`
-   *[_type == "privacyPolicy"] |order(title asc){
+   *[_type == "privacyPolicy"]{
   _id,
   title,
   description,

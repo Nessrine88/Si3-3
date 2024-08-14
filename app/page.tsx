@@ -10,6 +10,7 @@ import Pricing from "@/components/Pricing";
 import SherCoActive from "@/components/SherCoActive";
 import SherLive from "@/components/SherLive";
 import Testimonials from "@/components/Testimonials";
+
 import { client } from "@/utils/client";
 import groq from "groq";
 

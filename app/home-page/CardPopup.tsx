@@ -1,89 +1,51 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-
-interface FormData {
-  input1: string;
-  input2: string;
-  input3: string;
-  input4: string;
-  input5: string;
-  input6: string;
-  input7: string;
-  textarea: string;
-}
+import React, { useEffect } from 'react';
+import "../../app/globals.css";
 
 const CardPopup: React.FC<{ show: boolean; handleClose: () => void }> = ({ show, handleClose }) => {
-  const [formData, setFormData] = useState<FormData>({
-    input1: '',
-    input2: '',
-    input3: '',
-    input4: '',
-    input5: '',
-    input6: '',
-    input7: '',
-    textarea: ''
-  });
+  useEffect(() => {
+    if (show) {
+      const script = document.createElement("script");
+      script.src = "//js.hsforms.net/forms/embed/v2.js";
+      script.async = true;
+      script.onload = () => {
+        // @ts-ignore
+        if (window.hbspt) {
+          // @ts-ignore
+          window.hbspt.forms.create({
+            region: "na1",
+            portalId: "45396312",
+            formId: "52c3e838-aa8e-4e75-b874-4fd6ac9c3aef",
+            target: "#hubspotForm"
+          });
+        }
+      };
+      document.body.appendChild(script);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log(formData);
-  };
+      // Clean up the script and form on unmount
+      return () => {
+        document.body.removeChild(script);
+        const formContainer = document.getElementById("hubspotForm");
+        if (formContainer) {
+          formContainer.innerHTML = '';
+        }
+      };
+    }
+  }, [show]);
 
   return (
     show && (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4 py-8 overflow-auto"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4  overflow-auto"
         aria-labelledby="popup-title"
         role="dialog"
-        aria-modal="true"
+        aria-modal="false"
       >
-        <div className="relative bg-white mt-40 mb p-6 rounded-lg shadow-lg w-full max-w-lg">
-          <button
-            className="absolute top-2 right-2  text-white px-2 py-2 rounded "
-            onClick={handleClose}
-            aria-label="Close popup"
-          >
-           <i className="fas fa-times text-gray-300 text-lg"></i>
-
-          </button>
-          <h2 id="popup-title" className="text-2xl mb-4">Popup Form</h2>
-          <form onSubmit={handleSubmit}>
-            {(['input1', 'input2', 'input3', 'input4', 'input5', 'input6', 'input7'] as const).map((inputName) => (
-              <div className="mb-4" key={inputName}>
-                <label className="block text-gray-700">{inputName.replace('input', 'Input ')}</label>
-                <input
-                  type="text"
-                  name={inputName}
-                  className="w-full p-2 border border-gray-300 rounded mt-1"
-                  value={formData[inputName]}
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
-            <div className="mb-4">
-              <label className="block text-gray-700">Textarea</label>
-              <textarea
-                name="textarea"
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-                value={formData.textarea}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              Submit
-            </button>
-          </form>
+        <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+          <div className="flex justify-between items-center mb-4">
+            <h2 id="popup-title" className="text-2xl clash font-bold leading-6 text-[20px]">Add Community</h2>
+            <i className="fas fa-times text-[#404040] text-lg cursor-pointer" onClick={handleClose}></i>
+          </div>
+          <div id="hubspotForm"></div>
         </div>
       </div>
     )
